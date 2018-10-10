@@ -1,0 +1,17 @@
+INF0617_Ex02, Local Map Reduce
+Students: Carlos Eduardo Fernandes and Yakov Nae 
+================================================
+
+Intro:
+In this exercise we work with 156 files of climate data from 2017 measured in the USA. Each line in these files contains 31 fields. We will be working with the station ID, localization, date and time, mean min and max temperature measured in the station during one hour. Our goal is to write a program using the map-educe technique that can locate the station at the time with the most temperature variation.
+
+Parallel Strategy:
+In this exercise we need to map all climate lines into simple tasks that will be gathered by the reduce function for the processing part. The reduce function is the function that should find the station at the time with most temperature variation.
+
+This exercise is of low complexity. The map function should filter bad readings and pass the relevant data to the reduce function. We implemented two solutions that are quit similar:
+Implementation 1: We optimized the number of fields that are passed to the reduce function. The result of this exercise contain the 5 feilds: {date, time, x, y, temp_diff}. In this solution we optimized the number of argument that are passed from the map function. Therefor we calculated the temp_diff inside the map function and passed it as calculated to the reduce.
+Implementation 2: Here we optimized the number of operations that are made. In the first implementation we are doing casting from string to floats both in the map and reduce functions. Casting in the map function is important only for the temperature difference operation. Casting in the reduce function is important for the comparission. However, we can work with strings in the map function and leave the casting for the reduce. The trade-off here is in loading the bus with one more filed per task. Instead of maping to 5 fields (like before), we are mapping to 6 fields: {date, time, x, y, max_temp, min_temp}. Therefore, the gain here is in doing less computationa operations.
+
+Conclusions:
+============
+We run both implementation. the first one run in 14 seconds while the second run in 11 seconds. Reducing the number of casting improved our running time. But one must remember that we incremented the overhead. As the size of our problem increases, or as our bus decreases, this kind of trade-off can count more for the first implementation.
