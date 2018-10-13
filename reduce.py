@@ -5,7 +5,8 @@ result = ""
 for line in sys.stdin:
 	x1, x2, info = line.split(':')
 	diff = float(x1) - float(x2)
-	if (diff > large_diff):
+	if (diff > large_diff and diff < 15):
+		large_diff = diff
 		info = info.replace("\n","")
 		result = info+ ", " +str(diff)
 print(result)
