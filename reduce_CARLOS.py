@@ -6,7 +6,9 @@ for line in sys.stdin:
 	for line in sys.stdin:
 		diff, info = line.split(':')
 		diff = float(diff)
-		if (diff > large_diff):
+		# limit the large difference to 15oC
+		if (diff > large_diff and diff < 15):
+			large_diff = diff
 			info = info.replace("\n","")
 			result = info+ ", " +str(diff)
 print(result)
